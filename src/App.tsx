@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { GamePage } from './components/GamePage/index';
 import './App.css'
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
   return (
     <>
       <h1>Welcome to weSketch! {playerHandle}</h1>
+      <GamePage />
     </>
   )
 }
