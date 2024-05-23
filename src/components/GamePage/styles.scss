@@ -8,13 +8,16 @@ $box-size: 40px;
   }
 }
 
-.game-chat-container {
-  border: 1px solid white;
-  flex: 1 1 40%;
-}
-
-.general-chat {
-  border: 1px solid white;
+.chat-container {
+  flex-direction: column;
+  .game-chat {
+    border: 1px solid white;
+    flex: 1 1 40%;
+  }
+  
+  .general-chat {
+    border: 1px solid white;
+  }
 }
 
 .color-box {

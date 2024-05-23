@@ -16,6 +16,13 @@ enum Colors {
   White = 'white'
 }
 
+enum Tools {
+  Pencil = 'edit',
+  Line = 'pen_size_1',
+  Bucket = 'colors',
+  Eraser = 'ink_eraser'
+}
+
 const STARTING_POS = { x: 0, y: 0 }
 
 export const Canvas = () => {
@@ -24,6 +31,7 @@ export const Canvas = () => {
   const [lastPos, setLastPos] = useState<Position>(STARTING_POS)
   const [drawingColor, setDrawingColor] = useState<Colors>(Colors.Black)
   const [lineWidth, setLineWidth] = useState<number>(5)
+  const [currentTool, setCurrentTool] = useState<Tools>(Tools.Pencil)
   
   useEffect(() => {
     const canvas = canvasRef.current
@@ -91,12 +99,18 @@ export const Canvas = () => {
     setDrawingColor(e.target.classList[1])
   }
 
-  const colorBox = (color: string) => {
+  const colorBox = (color: Colors) => {
     return <div className={`color-box ${color}`} key={color} onClick={(e) => handleColorChange(e)}></div>
+  }
+
+  const toolBox = (tool: Tools) => {
+    return <div className="tool-box" key={tool}><span className="material-symbols-outlined">{tool}</span></div>
   }
 
   // pulls colors from enum list and returns a colorbox jsx element for the color selector
   const getColors = () => Object.values(Colors).map((color) => colorBox(color))
+
+  const getTools = () => Object.values(Tools).map((tool) => toolBox(tool))
 
   const changeLineWidth = (direction: string) => {
     if (direction === 'increase') return setLineWidth((prev) => prev += 1)
@@ -118,15 +132,16 @@ export const Canvas = () => {
           <div>Line Width</div>
           <div>{lineWidth}px</div>
           <span>{colorBox(drawingColor)}</span>
+          <span><div className="tool-box"><span className="material-symbols-outlined">{currentTool}</span></div></span>
           <div className="flex-container">
             <button className="line-width-button material-symbols-outlined" onClick={() => changeLineWidth('increase')}>add</button>
+            <button className="line-width-button" onClick={() => setLineWidth(5)}>Reset</button>
             <button className="line-width-button material-symbols-outlined" onClick={() => changeLineWidth('decrease')}>remove</button>
           </div>
         </div>
         <div className="tools-container">
         <div className="tools">
-          <div className="tool-box"><span className="material-symbols-outlined">edit</span></div>
-          <div className="tool-box"><span className="material-symbols-outlined">pen_size_1</span></div>
+          {getTools()}
         </div>
         <div className="color-selector">
           {getColors()}

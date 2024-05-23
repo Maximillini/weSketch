@@ -6,13 +6,12 @@ export const GamePage = () => {
   return (
     <div className="game-page">
       <div className="flex-container">
-        <div className="game-chat-container">
-          Game Chat
+        <div className="flex-container chat-container">
+          <div className="player-list">Player List</div>
+          <div className="game-chat">Game Chat</div>
+          <div className="general-chat">General Chat</div>
         </div>
         <Canvas />
-      </div>
-      <div className="flex-container">
-        <div className="general-chat">General Chat</div>
       </div>
     </div>
   )
