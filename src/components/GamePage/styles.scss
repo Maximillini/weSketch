@@ -1,0 +1,67 @@
+$box-size: 40px;
+
+.game-page {
+  display: flex;
+  flex-wrap: wrap;
+  .header {
+    flex: 0 0 100%;
+  }
+}
+
+.game-chat-container {
+  border: 1px solid white;
+  flex: 1 1 40%;
+}
+
+.general-chat {
+  border: 1px solid white;
+}
+
+.color-box {
+  height: $box-size;
+  width: $box-size;
+  &.black { background-color: black;}
+  &.blue { background-color: blue;}
+  &.green { background-color: green;}
+  &.orange { background-color: orange;}
+  &.purple { background-color: purple;}
+  &.pink { background-color: pink;}
+  &.red { background-color: red;}
+  &.white { background-color: white;}
+}
+
+.canvas-container {
+  display: flex;
+  justify-content: space-around;
+  #room-canvas {
+    background: white;
+  }
+  .tools-container {
+    border: 1px solid white;
+    padding: 10px 0;
+    .tools {
+      display: flex;
+    }
+    .color-selector {
+      border-bottom: 1px solid white;
+      display: flex;
+      .color-box {
+        flex: 0 0 $box-size;
+        &:hover { cursor: crosshair; }
+      }
+    }
+  }
+  .clear-button {
+    flex: 0 0 100%;
+  }
+}
+
+.current-tool-container {
+  border: 1px solid white;
+  margin: 0 10px 0 10px;
+  padding: 10px;
+
+  .line-width-button {
+    padding: 4px;
+  }
+}
