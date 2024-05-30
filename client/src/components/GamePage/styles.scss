@@ -68,6 +68,9 @@ $box-size: 40px;
   flex: 0 0 50%;
   flex-wrap: wrap;
   justify-content: space-between;
+  .chat-row {
+    flex: 1 1 100%;
+  }
   .player-list,
   .game-chat {
     @include chat-box;
@@ -81,9 +84,6 @@ $box-size: 40px;
     flex: 0 0 56%;
   }
 
-  .chat-input-container {
-    flex: 1 1 100%;
-  }
   .chat-input {
     width: 100%;
   }
