@@ -89,11 +89,17 @@ export const GamePage = () => {
         </div>
       </div>
       <div className="flex-container game-area">
-        <div className="flex-container chat-container">
-          <div className="player-list">Player List</div>
-          <div className="game-chat">Game Chat</div>
-          <div className="chat-input-container"><input className="chat-input" type="text" placeholder="Chat here" /></div>
-          <div className="general-chat">General Chat</div>
+        <div className="chat-container">
+          <div className="flex-container chat-row">
+            <div className="player-list">Player List</div>
+            <div className="game-chat">Game Chat</div>
+          </div>
+          <div className="flex-container chat-row">
+            <input className="chat-input" type="text" placeholder="Chat here" />
+          </div>
+          <div className="flex-container chat-row">
+            <div className="general-chat">General Chat</div>
+          </div>
         </div>
         <Canvas drawingColor={drawingColor} lineWidth={lineWidth}/>
       </div>
