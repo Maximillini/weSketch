@@ -13,7 +13,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <h1>Welcome to weSketch! {playerHandle}</h1>
+      {/* <h1>Welcome to weSketch! {playerHandle}</h1> */}
       <GamePage />
     </div>
   )

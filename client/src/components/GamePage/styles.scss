@@ -1,4 +1,8 @@
 $box-size: 40px;
+@mixin chat-box {
+  border: 1px solid white;
+  flex: 1 1 40%;
+}
 
 .game-page {
   display: flex;
@@ -6,17 +10,60 @@ $box-size: 40px;
   .header {
     flex: 0 0 100%;
   }
+  .top-row {
+    flex: 1 1 100%;
+    .tools-container {
+      border: 1px solid white;
+      padding: 10px 0;
+      .tools {
+        display: flex;
+        .tool-box {
+          height: $box-size;
+          width: $box-size;
+          user-select: none;
+          cursor: crosshair;
+          &:hover {
+            box-shadow: 0 0 10px 6px white;
+          }
+          &:active {
+            box-shadow: 0 0 10px 6px yellow;
+          }
+        }
+      }
+    }
+    .color-selector {
+      // border-bottom: 1px solid white;
+      display: flex;
+      .color-box {
+        flex: 0 0 $box-size;
+        cursor: crosshair;
+        &:hover {
+          box-shadow: 0 0 10px 6px aliceblue;
+        }
+        &:active {
+          box-shadow: 0 0 10px 6px yellow;
+        }
+      }
+    }
+    .clear-button {
+      flex: 1 1 auto;
+    }
+  }
+  .game-area {
+    width: 100%;
+  }
 }
 
 .chat-container {
-  flex-direction: column;
+  flex-wrap: wrap;
+  .player-list,
   .game-chat {
-    border: 1px solid white;
-    flex: 1 1 40%;
+    @include chat-box;
   }
   
   .general-chat {
     border: 1px solid white;
+    flex: 1 1 100%;
   }
 }
 
@@ -39,47 +86,46 @@ $box-size: 40px;
   #room-canvas {
     background: white;
   }
-  .tools-container {
-    border: 1px solid white;
-    padding: 10px 0;
-    .tools {
-      display: flex;
-      .tool-box {
-        height: $box-size;
-        width: $box-size;
-        user-select: none;
-        cursor: crosshair;
-        &:hover {
-          box-shadow: 0 0 10px 6px white;
-        }
-        &:active {
-          box-shadow: 0 0 10px 6px yellow;
-        }
-      }
-    }
-    .color-selector {
-      border-bottom: 1px solid white;
-      display: flex;
-      .color-box {
-        flex: 0 0 $box-size;
-        cursor: crosshair;
-        &:hover {
-          box-shadow: 0 0 10px 6px aliceblue;
-        }
-        &:active {
-          box-shadow: 0 0 10px 6px yellow;
-        }
-      }
-    }
-  }
-  .clear-button {
-    flex: 0 0 100%;
-  }
+  // .tools-container {
+  //   border: 1px solid white;
+  //   padding: 10px 0;
+  //   .tools {
+  //     display: flex;
+  //     .tool-box {
+  //       height: $box-size;
+  //       width: $box-size;
+  //       user-select: none;
+  //       cursor: crosshair;
+  //       &:hover {
+  //         box-shadow: 0 0 10px 6px white;
+  //       }
+  //       &:active {
+  //         box-shadow: 0 0 10px 6px yellow;
+  //       }
+  //     }
+  //   }
+  //   .color-selector {
+  //     border-bottom: 1px solid white;
+  //     display: flex;
+  //     .color-box {
+  //       flex: 0 0 $box-size;
+  //       cursor: crosshair;
+  //       &:hover {
+  //         box-shadow: 0 0 10px 6px aliceblue;
+  //       }
+  //       &:active {
+  //         box-shadow: 0 0 10px 6px yellow;
+  //       }
+  //     }
+  //   }
+  // }
+  // .clear-button {
+  //   flex: 0 0 100%;
+  // }
 }
 
 .current-tool-container {
   border: 1px solid white;
-  margin: 0 10px 0 10px;
   padding: 10px;
 
   .line-width-button {
