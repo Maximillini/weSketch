@@ -63,33 +63,36 @@ export const GamePage = () => {
   return (
     <div className="game-page">
       <div className="flex-container top-row">
-        <h1>WeSketch</h1>
-        <div className="current-tool-container">
-          <div className="flex-container">
-            <div>{lineWidth}px</div>
-            <span>{colorBox(drawingColor)}</span>
-            <span><div className="tool-box"><span className="material-symbols-outlined">{currentTool}</span></div></span>
+        <div className="logo"></div>
+        <div className="flex-container row-wrap">
+          <div className="current-tool-container">
+            <div className="flex-container">
+              <div>{lineWidth}px</div>
+              <span>{colorBox(drawingColor)}</span>
+              <span><div className="tool-box"><span className="material-symbols-outlined">{currentTool}</span></div></span>
+            </div>
+            <div className="flex-container">
+              <button className="line-width-button material-symbols-outlined" onClick={() => changeLineWidth('increase')}>add</button>
+              <button className="line-width-button" onClick={() => setLineWidth(5)}>Reset</button>
+              <button className="line-width-button material-symbols-outlined" onClick={() => changeLineWidth('decrease')}>remove</button>
+            </div>
           </div>
-          <div className="flex-container">
-            <button className="line-width-button material-symbols-outlined" onClick={() => changeLineWidth('increase')}>add</button>
-            <button className="line-width-button" onClick={() => setLineWidth(5)}>Reset</button>
-            <button className="line-width-button material-symbols-outlined" onClick={() => changeLineWidth('decrease')}>remove</button>
+          <div className="tools-container">
+            <div className="tools">
+              {getTools()}
+            </div>
+            <div className="color-selector">
+              {getColors()}
+            </div>
+            <button className="clear-button" onClick={clearCanvas}>Clear Canvas</button>
           </div>
-        </div>
-        <div className="tools-container">
-          <div className="tools">
-            {getTools()}
-          </div>
-          <div className="color-selector">
-            {getColors()}
-          </div>
-          <button className="clear-button" onClick={clearCanvas}>Clear Canvas</button>
         </div>
       </div>
       <div className="flex-container game-area">
         <div className="flex-container chat-container">
           <div className="player-list">Player List</div>
           <div className="game-chat">Game Chat</div>
+          <div className="chat-input-container"><input className="chat-input" type="text" placeholder="Chat here" /></div>
           <div className="general-chat">General Chat</div>
         </div>
         <Canvas drawingColor={drawingColor} lineWidth={lineWidth}/>

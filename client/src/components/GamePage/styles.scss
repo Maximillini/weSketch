@@ -1,6 +1,10 @@
 $box-size: 40px;
+
 @mixin chat-box {
+  background-color: white;
   border: 1px solid white;
+  box-shadow: inset 0px 1px 5px 1px #222;
+  color: #222;
   flex: 1 1 40%;
 }
 
@@ -12,6 +16,12 @@ $box-size: 40px;
   }
   .top-row {
     flex: 1 1 100%;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    .logo {
+      background-image: url('/wesketch.png');
+      width: 10%;
+    }
     .tools-container {
       border: 1px solid white;
       padding: 10px 0;
@@ -32,7 +42,6 @@ $box-size: 40px;
       }
     }
     .color-selector {
-      // border-bottom: 1px solid white;
       display: flex;
       .color-box {
         flex: 0 0 $box-size;
@@ -50,20 +59,39 @@ $box-size: 40px;
     }
   }
   .game-area {
+    justify-content: space-between;
     width: 100%;
   }
 }
 
 .chat-container {
+  flex: 0 0 50%;
   flex-wrap: wrap;
+  justify-content: space-between;
   .player-list,
   .game-chat {
     @include chat-box;
+  }
+
+  .player-list {
+    flex: 0 0 40%;
+  }
+
+  .game-chat {
+    flex: 0 0 56%;
+  }
+
+  .chat-input-container {
+    flex: 1 1 100%;
+  }
+  .chat-input {
+    width: 100%;
   }
   
   .general-chat {
     border: 1px solid white;
     flex: 1 1 100%;
+    margin-top: 20px;
   }
 }
 
@@ -127,7 +155,7 @@ $box-size: 40px;
 .current-tool-container {
   border: 1px solid white;
   padding: 10px;
-
+  justify-content: center;
   .line-width-button {
     padding: 4px;
   }
