@@ -25,12 +25,12 @@ enum Tools {
 
 const STARTING_POS = { x: 0, y: 0 }
 
-export const Canvas = () => {
+export const Canvas = ({ drawingColor, lineWidth }: { drawingColor: string, lineWidth: number }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [isDrawing, setIsDrawing] = useState(false)
   const [lastPos, setLastPos] = useState<Position>(STARTING_POS)
-  const [drawingColor, setDrawingColor] = useState<Colors>(Colors.Black)
-  const [lineWidth, setLineWidth] = useState<number>(5)
+  // const [drawingColor, setDrawingColor] = useState<Colors>(Colors.Black)
+  // const [lineWidth, setLineWidth] = useState<number>(5)
   const [currentTool, setCurrentTool] = useState<Tools>(Tools.Pencil)
   
   useEffect(() => {
@@ -123,7 +123,7 @@ export const Canvas = () => {
 
   return (
     <div className="canvas-container">
-      <div className="flex-container">
+      {/* <div className="flex-container">
         <div className="current-tool-container">
           <div className="flex-container">
             <div>{lineWidth}px</div>
@@ -145,7 +145,7 @@ export const Canvas = () => {
         </div>
         <button className="clear-button" onClick={clearCanvas}>Clear Canvas</button>
       </div>
-      </div>
+      </div> */}
       <canvas
         id="room-canvas" 
         ref={canvasRef}
