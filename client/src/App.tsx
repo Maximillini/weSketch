@@ -1,20 +1,13 @@
-import { useState } from 'react'
 import { GamePage } from './components/GamePage/index';
+import { LoginPage } from './components/LoginPage';
+import { usePlayerStore } from './stores/playerStore';
 import './App.css'
 
 function App() {
-  const [playerHandle, setPlayerHandle] = useState<string>('')
-
-  const handleNameSubmit = (value: string) => {
-
-    setPlayerHandle(value)
-    console.log({ value })
-  }
-
+  const handle = usePlayerStore((state) => state.handle)
   return (
     <div className="app-container">
-      {/* <h1>Welcome to weSketch! {playerHandle}</h1> */}
-      <GamePage />
+      {handle !== '' ? <GamePage /> : <LoginPage />}
     </div>
   )
 }
