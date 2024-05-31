@@ -1,8 +1,14 @@
 import { useState } from 'react'
 import { Canvas } from './Canvas'
+import { PlayerList } from './PlayerList'
+import { generateUsers } from '../../helpers/mockData'
 import './styles.scss'
+import { usePlayerStore } from '../../stores/playerStore'
+
+const PLAYER_LIST = generateUsers(10)
 
 export const GamePage = () => {
+  const playerHandle = usePlayerStore((state) => state.handle)
   const [drawingColor, setDrawingColor] = useState<Colors>(Colors.Black)
   const [lineWidth, setLineWidth] = useState<number>(5)
   const [currentTool, setCurrentTool] = useState<Tools>(Tools.Pencil)
@@ -91,7 +97,7 @@ export const GamePage = () => {
       <div className="flex-container game-area">
         <div className="chat-container">
           <div className="flex-container chat-row">
-            <div className="player-list">Player List</div>
+            <PlayerList playerList={[{ userName: playerHandle, score: 0 }, ...PLAYER_LIST]}/>
             <div className="game-chat">Game Chat</div>
           </div>
           <div className="flex-container chat-row">
