@@ -65,11 +65,13 @@ $box-size: 40px;
 }
 
 .chat-container {
+  display: flex;
   flex: 0 0 50%;
   flex-wrap: wrap;
   justify-content: space-between;
   .chat-row {
     flex: 1 1 100%;
+    justify-content: space-between;
   }
   .player-list,
   .game-chat {
