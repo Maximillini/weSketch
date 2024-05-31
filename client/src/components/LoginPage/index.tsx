@@ -5,7 +5,7 @@ type LoginPageProps = {
   handleSubmit: (value: string) => void
 }
 
-export const LoginPage = ({ handleSubmit }: LoginPageProps) => {
+export const LoginPage = () => {
   const setHandle = usePlayerStore((state) => state.setHandle)
   const [handleValue, setHandleValue] = useState<string>('')
 
@@ -19,7 +19,7 @@ export const LoginPage = ({ handleSubmit }: LoginPageProps) => {
       <h1>Login</h1>
       <div className="login-box">
         <input type="text" placeholder="Handle" value={handleValue} onChange={(e) => handleChange(e)}/>
-        <input type="button" value="Submit" onClick={(e) => { setHandle(e.target.value) }}/>
+        <input type="button" value="Submit" onClick={(e) => { setHandle(handleValue) }}/>
       </div>
     </div>
   )

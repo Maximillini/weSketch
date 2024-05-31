@@ -1,5 +1,9 @@
 $box-size: 40px;
 
+@mixin random-font-color(){
+  color: rgb(random(255), random(255), random(255));
+}
+
 @mixin chat-box {
   background-color: white;
   border: 1px solid white;
@@ -72,6 +76,12 @@ $box-size: 40px;
   .chat-row {
     flex: 1 1 100%;
     justify-content: space-between;
+    &:first-child {
+      margin-bottom: 20px;
+    }
+    &:nth-child(2) {
+      height: 40px;
+    }
   }
   .player-list,
   .game-chat {
@@ -79,11 +89,28 @@ $box-size: 40px;
   }
 
   .player-list {
-    flex: 0 0 40%;
+    flex: 0 0 35%;
+    overflow-y: scroll;
+    .player-count {
+      padding-left: 20px;
+      text-align: left;
+    }
+    ul {
+      list-style: none;
+      padding: 0 30px 0 20px;
+      text-align: left;
+      .player-item {
+        display: flex;
+        justify-content: space-between;
+        @for $i from 0 to 100 {
+          &:nth-child(#{$i}) { @include random-font-color() }
+        }
+      }
+    }
   }
 
   .game-chat {
-    flex: 0 0 56%;
+    flex: 0 0 62%;
   }
 
   .chat-input {
