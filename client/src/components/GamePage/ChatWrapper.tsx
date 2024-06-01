@@ -4,20 +4,6 @@ import { ChatBox } from "./ChatBox"
 import { generateUsers, generateChatLog } from '../../helpers/mockData'
 import { usePlayerStore } from "../../stores/playerStore"
 
-//TODO - scroll to bottom of chat when new chat submitted
-// const getLatestChat = () => {
-//   const chatBubbles = document.querySelectorAll('.chat-bubble-container');
-//   const latestChat = chatBubbles[chatBubbles.length - 1];
-
-//   return latestChat;
-// };
-
-// const smoothScrollToBottom = () => {
-//   const latestChat = getLatestChat();
-
-//   chatMessageListContainer.scrollTo({ top: latestChat.offsetTop, behavior: 'smooth' });
-// };
-
 const PLAYER_LIST = generateUsers(5)
 
 type Chat = {
@@ -53,7 +39,6 @@ export const ChatWrapper = () => {
   }, [generalChats])
 
   const handleChatSubmit = (e) => {
-    // TODO - add scroll to bottom code
     if (e.key !== 'Enter') return
 
     const chat = { userName: playerHandle, message: e.target.value }
@@ -72,9 +57,7 @@ export const ChatWrapper = () => {
   }
 
   const handleChatBoxFocus = (e: React.MouseEvent<HTMLDivElement>) => {
-    console.log({ chatType: e.target.classList.value })
-    console.log(e.currentTarget.classList.value)
-    inputRef.current.focus()
+    inputRef.current?.focus()
     if (e.currentTarget.classList.value.includes(currentChatFocus)) return
 
     if (e.currentTarget.classList.value.includes('game')) return setCurrentChatFocus('game')
