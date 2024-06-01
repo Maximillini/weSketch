@@ -24,11 +24,15 @@ export const generateUsers = (count: number) => {
   return users
 }
 
-export const generateChatLog = (playersList: MockUser[], chatsAmount: number): MockChat[] => {
+export const generateChatLog = (playersList: MockUser[], chatsAmount: number, singleWord: boolean=false): MockChat[] => {
   const chats = []
   
   for (let i = 0; i < chatsAmount; i++) {
-    chats.push({ userName: playersList[Math.floor(Math.random() * playersList.length)].userName, message: faker.lorem.lines({ min: 1, max: 3 }) })
+    let message = faker.lorem.lines({ min: 1, max: 3 })
+
+    if (singleWord) message = faker.lorem.word()
+
+    chats.push({ userName: playersList[Math.floor(Math.random() * playersList.length)].userName, message })
   }
 
   return chats

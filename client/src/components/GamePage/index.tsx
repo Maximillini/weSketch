@@ -1,13 +1,7 @@
 import { useState } from 'react'
 import { Canvas } from './Canvas'
-import { PlayerList } from './PlayerList'
-import { generateUsers, generateChatLog } from '../../helpers/mockData'
+import { ChatWrapper } from './ChatWrapper'
 import './styles.scss'
-import { usePlayerStore } from '../../stores/playerStore'
-import { ChatBox } from './ChatBox'
-
-const PLAYER_LIST = generateUsers(5)
-const CHAT_LOG = generateChatLog(PLAYER_LIST, 20)
 
 enum Colors {
   Black = 'black',
@@ -28,12 +22,9 @@ enum Tools {
 }
 
 export const GamePage = () => {
-  const playerHandle = usePlayerStore((state) => state.handle)
   const [drawingColor, setDrawingColor] = useState<Colors>(Colors.Black)
   const [lineWidth, setLineWidth] = useState<number>(5)
   const [currentTool, setCurrentTool] = useState<Tools>(Tools.Pencil)
-
-  
 
   const handleColorChange = (e) => {
     setDrawingColor(e.target.classList[1])
@@ -99,14 +90,7 @@ export const GamePage = () => {
         </div>
       </div>
       <div className="flex-container game-area">
-        <div className="chat-container">
-          <div className="flex-container chat-row">
-            <PlayerList playerList={[...PLAYER_LIST, { userName: playerHandle, score: 0 }]}/>
-            <ChatBox chatType="game" chats={CHAT_LOG} />
-          </div>
-          <input className="chat-input" type="text" placeholder="Chat here" />
-          <ChatBox chatType="general" chats={CHAT_LOG} />
-        </div>
+        <ChatWrapper />
         <Canvas drawingColor={drawingColor} lineWidth={lineWidth}/>
       </div>
     </div>
