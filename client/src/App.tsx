@@ -5,6 +5,7 @@ import './App.css'
 
 function App() {
   const handle = usePlayerStore((state) => state.handle)
+  // TODO - Add Routing via React or Tanstack Router
   return (
     <>
       {handle !== '' ? <GamePage /> : <LoginPage />}

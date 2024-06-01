@@ -1,5 +1,4 @@
 // TODO - Split styling into individual files
-
 $box-size: 40px;
 
 @mixin random-font-color(){
@@ -91,6 +90,7 @@ $box-size: 40px;
   .player-list {
     flex: 0 0 35%;
     overflow-y: scroll;
+    scrollbar-width: thin;
     .player-count {
       padding-left: 20px;
       text-align: left;
@@ -146,6 +146,8 @@ $box-size: 40px;
   .game-chat,
   .general-chat {
     overflow-y: scroll;
+    scrollbar-width: thin;
+    scroll-snap-align: end;
     ul {
       list-style: none;
       padding: 0 30px 0 20px;
@@ -154,6 +156,9 @@ $box-size: 40px;
         border-radius: 5px;
         margin: 4px 0;
       }
+    }
+    &.focused {
+      outline: 2px solid palevioletred;
     }
   }
 }

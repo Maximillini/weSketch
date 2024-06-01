@@ -1,11 +1,15 @@
+import { forwardRef } from 'react'
+
 type ChatBoxProps = {
   chatType: 'game'|'general',
-  chats: {userName: string, message: string}[]
+  chats: {userName: string, message: string}[],
+  onClick: (e: React.MouseEvent<HTMLDivElement>) => void
+  focused: boolean,
 }
 
-export const ChatBox = ({ chatType, chats=[] }: ChatBoxProps) => {
+export const ChatBox = forwardRef(({ chatType, chats=[], onClick, focused }: ChatBoxProps, ref: React.ForwardedRef<HTMLDivElement>) => {
   return (
-    <div className={`${chatType}-chat`}>
+    <div className={`${chatType}-chat ${focused ? 'focused' : ''} ${chatType}`} onClick={(e) => onClick(e)} ref={ref}>
       <div className="chat-title">{chatType} Chat</div>
       <ul className="chat-log">
         {chats.map((chat) => (
@@ -14,4 +18,4 @@ export const ChatBox = ({ chatType, chats=[] }: ChatBoxProps) => {
       </ul>
     </div>
   )
-}
+})
