@@ -6,9 +6,9 @@ import './App.css'
 function App() {
   const handle = usePlayerStore((state) => state.handle)
   return (
-    <div className="app-container">
+    <>
       {handle !== '' ? <GamePage /> : <LoginPage />}
-    </div>
+    </>
   )
 }
 

@@ -1,3 +1,5 @@
+// TODO - Split styling into individual files
+
 $box-size: 40px;
 
 @mixin random-font-color(){
@@ -23,8 +25,7 @@ $box-size: 40px;
     justify-content: space-between;
     margin-bottom: 20px;
     .logo {
-      background-image: url('/wesketch.png');
-      width: 10%;
+      font-size: 3rem;
     }
     .tools-container {
       border: 1px solid white;
@@ -37,7 +38,7 @@ $box-size: 40px;
           user-select: none;
           cursor: crosshair;
           &:hover {
-            box-shadow: 0 0 10px 6px white;
+            box-shadow: inset 0 0 10px 6px white;
           }
           &:active {
             box-shadow: 0 0 10px 6px yellow;
@@ -51,10 +52,11 @@ $box-size: 40px;
         flex: 0 0 $box-size;
         cursor: crosshair;
         &:hover {
-          box-shadow: 0 0 10px 6px aliceblue;
+          box-shadow: inset 0 0 10px 6px yellow;
         }
         &:active {
           box-shadow: 0 0 10px 6px yellow;
+          z-index: 1;
         }
       }
     }
@@ -69,14 +71,12 @@ $box-size: 40px;
 }
 
 .chat-container {
-  display: flex;
   flex: 0 0 50%;
-  flex-wrap: wrap;
-  justify-content: space-between;
   .chat-row {
     flex: 1 1 100%;
     justify-content: space-between;
     &:first-child {
+      // max-height: 33%;
       margin-bottom: 20px;
     }
     &:nth-child(2) {
@@ -102,15 +102,29 @@ $box-size: 40px;
       .player-item {
         display: flex;
         justify-content: space-between;
-        @for $i from 0 to 100 {
-          &:nth-child(#{$i}) { @include random-font-color() }
+        &:first-child {
+          color: red;
         }
+        &:nth-child(2) {
+          color: #20ac3e;
+        }
+        // @for $i from 0 to 100 {
+        //   &:nth-child(#{$i}) { @include random-font-color() }
+        // }
       }
     }
   }
 
   .game-chat {
     flex: 0 0 62%;
+    height: 322px;
+    .chat {
+      border-radius: 10px;
+      margin: 2px 0;
+      .user {
+        color: red;
+      }
+    }
   }
 
   .chat-input {
@@ -121,6 +135,26 @@ $box-size: 40px;
     border: 1px solid white;
     flex: 1 1 100%;
     margin-top: 20px;
+    height: 212px;
+    .chat {
+      .user {
+        color: pink;
+      }
+    }
+  }
+
+  .game-chat,
+  .general-chat {
+    overflow-y: scroll;
+    ul {
+      list-style: none;
+      padding: 0 30px 0 20px;
+      text-align: left;
+      .chat {
+        border-radius: 5px;
+        margin: 4px 0;
+      }
+    }
   }
 }
 
@@ -140,6 +174,7 @@ $box-size: 40px;
 .canvas-container {
   display: flex;
   justify-content: space-around;
+  height: 600px;
   #room-canvas {
     background: white;
   }
