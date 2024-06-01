@@ -1,11 +1,31 @@
 import { useState } from 'react'
 import { Canvas } from './Canvas'
 import { PlayerList } from './PlayerList'
-import { generateUsers } from '../../helpers/mockData'
+import { generateUsers, generateChatLog } from '../../helpers/mockData'
 import './styles.scss'
 import { usePlayerStore } from '../../stores/playerStore'
+import { ChatBox } from './ChatBox'
 
-const PLAYER_LIST = generateUsers(10)
+const PLAYER_LIST = generateUsers(5)
+const CHAT_LOG = generateChatLog(PLAYER_LIST, 20)
+
+enum Colors {
+  Black = 'black',
+  Blue = 'blue',
+  Green = 'green',
+  Orange = 'orange',
+  Pink = 'pink',
+  Purple = 'purple',
+  Red = 'red',
+  White = 'white'
+}
+
+enum Tools {
+  Pencil = 'edit',
+  Line = 'pen_size_1',
+  Bucket = 'colors',
+  Eraser = 'ink_eraser'
+}
 
 export const GamePage = () => {
   const playerHandle = usePlayerStore((state) => state.handle)
@@ -13,23 +33,7 @@ export const GamePage = () => {
   const [lineWidth, setLineWidth] = useState<number>(5)
   const [currentTool, setCurrentTool] = useState<Tools>(Tools.Pencil)
 
-  enum Colors {
-    Black = 'black',
-    Blue = 'blue',
-    Green = 'green',
-    Orange = 'orange',
-    Pink = 'pink',
-    Purple = 'purple',
-    Red = 'red',
-    White = 'white'
-  }
   
-  enum Tools {
-    Pencil = 'edit',
-    Line = 'pen_size_1',
-    Bucket = 'colors',
-    Eraser = 'ink_eraser'
-  }
 
   const handleColorChange = (e) => {
     setDrawingColor(e.target.classList[1])
@@ -69,7 +73,7 @@ export const GamePage = () => {
   return (
     <div className="game-page">
       <div className="flex-container top-row">
-        <div className="logo"></div>
+        <div className="logo">weSketch</div>
         <div className="flex-container row-wrap">
           <div className="current-tool-container">
             <div className="flex-container">
@@ -97,15 +101,11 @@ export const GamePage = () => {
       <div className="flex-container game-area">
         <div className="chat-container">
           <div className="flex-container chat-row">
-            <PlayerList playerList={[{ userName: playerHandle, score: 0 }, ...PLAYER_LIST]}/>
-            <div className="game-chat">Game Chat</div>
+            <PlayerList playerList={[...PLAYER_LIST, { userName: playerHandle, score: 0 }]}/>
+            <ChatBox chatType="game" chats={CHAT_LOG} />
           </div>
-          <div className="flex-container chat-row">
-            <input className="chat-input" type="text" placeholder="Chat here" />
-          </div>
-          <div className="flex-container chat-row">
-            <div className="general-chat">General Chat</div>
-          </div>
+          <input className="chat-input" type="text" placeholder="Chat here" />
+          <ChatBox chatType="general" chats={CHAT_LOG} />
         </div>
         <Canvas drawingColor={drawingColor} lineWidth={lineWidth}/>
       </div>
