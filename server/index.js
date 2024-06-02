@@ -17,7 +17,6 @@ io.on('connection', (socket) => {
   console.log('a user connected!', socket.id);
 
   socket.on('draw', (data) => {
-    console.log({ data })
     socket.broadcast.emit('draw', data);
   });
 
@@ -44,7 +43,7 @@ io.on('connection', (socket) => {
     activeUsers[socket.id] = handleValue;
     console.log({ activeUsers })
     // io.emit('register user', Object.values(activeUsers));
-    socket.emit('user-added', Object.values(activeUsers))
+    io.emit('user-added', Object.values(activeUsers))
   });
 
   socket.on('chat message', (chatData) => {
