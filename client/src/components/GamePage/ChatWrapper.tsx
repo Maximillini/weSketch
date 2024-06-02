@@ -1,23 +1,20 @@
 import { useState, useRef, useEffect } from "react"
 import { PlayerList } from "./PlayerList"
 import { ChatBox } from "./ChatBox"
-import { generateUsers, generateChatLog } from '../../helpers/mockData'
 import { usePlayerStore } from "../../stores/playerStore"
+import { io } from 'socket.io-client'
+import { useGameStore } from "../../stores/gameStore"
 
-const PLAYER_LIST = generateUsers(5)
-
-type Chat = {
-  userName: string,
-  message: string
-}
+const socket = io('http://localhost:4000')
 
 type ChatType = 'game' | 'general'
 
 export const ChatWrapper = () => {
   const playerHandle = usePlayerStore((state) => state.handle)
-  // TODO - Remove generateChatLog
-  const [gameChats, setGameChats] = useState<Chat[]>(generateChatLog(PLAYER_LIST, 34, true))
-  const [generalChats, setGeneralChats] = useState<Chat[]>(generateChatLog(PLAYER_LIST, 13))
+  const playerList = useGameStore((state) => state.playerList)
+  const addPlayer = useGameStore((state) => state.addPlayer)
+  const [gameChats, setGameChats] = useState([])
+  const [generalChats, setGeneralChats] = useState([])
   const [chatValue, setChatValue] = useState<string>('')
   const [currentChatFocus, setCurrentChatFocus] = useState<ChatType>('game')
   const gameChatRef = useRef<HTMLDivElement>(null)
@@ -25,39 +22,55 @@ export const ChatWrapper = () => {
   const inputRef = useRef(null)
 
   useEffect(() => {
-    console.log(gameChatRef.current?.querySelectorAll('.chat'))
+    socket.on('game message', (chat) => {
+      console.log({ chat })
+      setGameChats((prev) => [...prev, chat])
+    })
+
+    socket.on('general message', (chat) => {
+      setGeneralChats((prev) => [...prev, chat])
+    })
+
+    socket.on('user-added', (players) => {
+      console.log({ players })
+      addPlayer({ userName: players[players.length - 1], score: 0 })
+    })
+  }, [addPlayer])
+
+  useEffect(() => {
+    console.log({ gameChats })
     const gameChatList = gameChatRef.current?.querySelectorAll('.chat') ?? []
-    const latestGameChat = gameChatList[gameChatList?.length - 1]
+    if (!gameChatList.length) return
+    const latestGameChat = gameChatList[gameChatList?.length - 1] as HTMLElement
     gameChatRef.current?.scrollTo({ top: latestGameChat.offsetTop, behavior: 'smooth' });
-    console.log({ latestGameChat })
   }, [gameChats])
 
   useEffect(() => {
     const generalChatList = generalChatRef.current?.querySelectorAll('.chat') ?? []
-    const latestGeneralChat = generalChatList[generalChatList?.length - 1]
+    if (!generalChatList.length) return
+    const latestGeneralChat = generalChatList[generalChatList?.length - 1] as HTMLElement
     generalChatRef.current?.scrollTo({ top: latestGeneralChat.offsetTop, behavior: 'smooth' });
   }, [generalChats])
 
-  const handleChatSubmit = (e) => {
+  const handleChatSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter') return
 
-    const chat = { userName: playerHandle, message: e.target.value }
+    const chat = { userName: playerHandle, message: (e.target as HTMLInputElement).value }
 
     setChatValue('')
-
-    if (currentChatFocus === 'general') return setGeneralChats([...generalChats, chat])
-
-    return setGameChats([...gameChats, chat])
+    
+    return socket.emit('chat message', {...chat, ...{ chatType: currentChatFocus }})
   }
 
   const handleChatInputChange = (e: React.SyntheticEvent) => {
     e.preventDefault()
 
-    setChatValue(e.target.value)
+    setChatValue((e.target as HTMLInputElement).value)
   }
 
   const handleChatBoxFocus = (e: React.MouseEvent<HTMLDivElement>) => {
-    inputRef.current?.focus()
+    if (!inputRef.current) return
+    (inputRef.current as HTMLDivElement)?.focus()
     if (e.currentTarget.classList.value.includes(currentChatFocus)) return
 
     if (e.currentTarget.classList.value.includes('game')) return setCurrentChatFocus('game')
@@ -68,7 +81,7 @@ export const ChatWrapper = () => {
   return (
     <div className="chat-container">
       <div className="flex-container chat-row">
-        <PlayerList playerList={[...PLAYER_LIST, { userName: playerHandle, score: 0 }]}/>
+        <PlayerList playerList={playerList}/>
         <ChatBox 
           chatType="game"
           chats={gameChats}
