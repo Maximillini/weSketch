@@ -3,16 +3,18 @@ import { PlayerList } from "./PlayerList"
 import { ChatBox } from "./ChatBox"
 import { usePlayerStore } from "../../stores/playerStore"
 import { io } from 'socket.io-client'
-import { useGameStore } from "../../stores/gameStore"
+// import { useGameStore } from "../../stores/gameStore"
 
 const socket = io('http://localhost:4000')
-
+// const playerList = socket.on('user-added', (players) => players)
+// console.log({ playerList })
 type ChatType = 'game' | 'general'
 
 export const ChatWrapper = () => {
   const playerHandle = usePlayerStore((state) => state.handle)
-  const playerList = useGameStore((state) => state.playerList)
-  const addPlayer = useGameStore((state) => state.addPlayer)
+  // const playerList = useGameStore((state) => state.playerList)
+  // const addPlayer = useGameStore((state) => state.addPlayer)
+  const [playerList, setPlayerList] = useState([])
   const [gameChats, setGameChats] = useState([])
   const [generalChats, setGeneralChats] = useState([])
   const [chatValue, setChatValue] = useState<string>('')
@@ -33,9 +35,19 @@ export const ChatWrapper = () => {
 
     socket.on('user-added', (players) => {
       console.log({ players })
-      addPlayer({ userName: players[players.length - 1], score: 0 })
+      const formattedPlayers = players.map((player) => { return { userName: player, score: 0 }})
+      setGameChats((prev) => [...prev, { userName: 'admin', message: `${players[players.length - 1]} has joined the game`}])
+      setPlayerList(formattedPlayers)
+      // addPlayer({ userName: players[players.length - 1], score: 0 })
     })
-  }, [addPlayer])
+
+    socket.on('leave chat', (updatedPlayers, leavingPlayer) => {
+      const formattedPlayers = updatedPlayers.map((player) => { return { userName: player, score: 0 }})
+      setGameChats((prev) => [...prev, { userName: 'admin', message: `${leavingPlayer} has left the game`}])
+
+      setPlayerList(formattedPlayers)
+    })
+  }, [])
 
   useEffect(() => {
     console.log({ gameChats })
