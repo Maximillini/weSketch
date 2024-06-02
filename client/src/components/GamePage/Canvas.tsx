@@ -51,6 +51,8 @@ export const Canvas = ({ drawingColor, lineWidth }: { drawingColor: string, line
       context.lineTo(getOffsetX(e), getOffsetY(e))
       context.stroke()
       setLastPos({ x: getOffsetX(e), y: getOffsetY(e) })
+
+      socket.emit('draw', { x: getOffsetX(e) , y: getOffsetY(e), color: drawingColor, lineWidth })
     }
 
     const stopDrawing = () => setIsDrawing(false)
@@ -62,9 +64,9 @@ export const Canvas = ({ drawingColor, lineWidth }: { drawingColor: string, line
 
     socket.on('draw', (data) => {
       const { x, y } = data
-      context.lineWidth = lineWidth
+      context.lineWidth = data.lineWidth
       context.lineCap = 'round'
-      context.strokeStyle = drawingColor
+      context.strokeStyle = data.color
       
       context.lineTo(x, y)
       context.stroke()
