@@ -2,10 +2,11 @@
   "name": "wesketch",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "client": "cd client && npm run dev",
-    "server": "cd server && node index.js",
+    "server": "cd server && nodemon index.js",
     "dev": "concurrently \"npm run client\" \"npm run server\"",
     "build": "cd client && npm run build"
   },
@@ -13,6 +14,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/node": "^20.13.0",
     "concurrently": "^8.2.2"
   }
 }

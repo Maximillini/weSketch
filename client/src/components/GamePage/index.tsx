@@ -26,8 +26,12 @@ export const GamePage = () => {
   const [lineWidth, setLineWidth] = useState<number>(5)
   const [currentTool, setCurrentTool] = useState<Tools>(Tools.Pencil)
 
-  const handleColorChange = (e) => {
-    setDrawingColor(e.target.classList[1])
+  const handleColorChange = (e: React.MouseEvent<HTMLElement>) => {
+    setDrawingColor((e.target as HTMLElement).classList[1] as Colors)
+  }
+
+  const handleToolChange = (e: React.MouseEvent<HTMLSpanElement>) => {
+    setCurrentTool((e.target as HTMLDivElement).classList[1] as Tools)
   }
 
   const changeLineWidth = (direction: string) => {
@@ -37,15 +41,16 @@ export const GamePage = () => {
     return setLineWidth((prev) => prev -= 1)
   }
 
-  const clearCanvas = () => {
-    const canvas = canvasRef.current
-    if (!canvas) return
+  // TODO - Fix Clear Canvas Button
+  // const clearCanvas = () => {
+  //   const canvas = canvasRef.current
+  //   if (!canvas) return
 
-    const context = canvas.getContext('2d')
-    if (!context) return
+  //   const context = canvas.getContext('2d')
+  //   if (!context) return
 
-    context.clearRect(0, 0, canvas.width, canvas.height)
-  }
+  //   context.clearRect(0, 0, canvas.width, canvas.height)
+  // }
 
   const colorBox = (color: Colors, isClickable: boolean=true) => {
     if (!isClickable) return <div className={`color-box ${color}`}></div>
@@ -54,7 +59,7 @@ export const GamePage = () => {
   }
 
   const toolBox = (tool: Tools) => {
-    return <span className="material-symbols-outlined tool-box" key={tool}>{tool}</span>
+    return <span className="material-symbols-outlined tool-box" key={tool} onClick={(e) => handleToolChange(e)}>{tool}</span>
   }
 
   // pulls colors from enum list and returns a colorbox jsx element for the color selector
@@ -85,7 +90,7 @@ export const GamePage = () => {
             <div className="color-selector">
               {getColors()}
             </div>
-            <button className="clear-button" onClick={clearCanvas}>Clear Canvas</button>
+            <button className="clear-button" onClick={() => console.log('clear canvas')}>Clear Canvas</button>
           </div>
         </div>
       </div>

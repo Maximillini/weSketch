@@ -1,27 +1,13 @@
 import { useState, useRef, useEffect } from 'react'
+import { io } from 'socket.io-client'
+// import { getPixel, setPixel } from '../../helpers/canvasHelpers';
 
 type Position = {
   x: number,
   y: number
 }
 
-// enum Colors {
-//   Black = 'black',
-//   Blue = 'blue',
-//   Green = 'green',
-//   Orange = 'orange',
-//   Pink = 'pink',
-//   Purple = 'purple',
-//   Red = 'red',
-//   White = 'white'
-// }
-
-// enum Tools {
-//   Pencil = 'edit',
-//   Line = 'pen_size_1',
-//   Bucket = 'colors',
-//   Eraser = 'ink_eraser'
-// }
+const socket = io('http://localhost:4000')
 
 const STARTING_POS = { x: 0, y: 0 }
 
@@ -29,9 +15,6 @@ export const Canvas = ({ drawingColor, lineWidth }: { drawingColor: string, line
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [isDrawing, setIsDrawing] = useState(false)
   const [lastPos, setLastPos] = useState<Position>(STARTING_POS)
-  // const [drawingColor, setDrawingColor] = useState<Colors>(Colors.Black)
-  // const [lineWidth, setLineWidth] = useState<number>(5)
-  // const [currentTool, setCurrentTool] = useState<Tools>(Tools.Pencil)
   
   useEffect(() => {
     const canvas = canvasRef.current
@@ -68,6 +51,8 @@ export const Canvas = ({ drawingColor, lineWidth }: { drawingColor: string, line
       context.lineTo(getOffsetX(e), getOffsetY(e))
       context.stroke()
       setLastPos({ x: getOffsetX(e), y: getOffsetY(e) })
+
+      socket.emit('draw', { x: getOffsetX(e) , y: getOffsetY(e), color: drawingColor, lineWidth })
     }
 
     const stopDrawing = () => setIsDrawing(false)
@@ -77,49 +62,26 @@ export const Canvas = ({ drawingColor, lineWidth }: { drawingColor: string, line
     canvas.addEventListener('mouseup', stopDrawing as unknown as EventListener)
     canvas.addEventListener('mouseout', stopDrawing as unknown as EventListener)
 
+    socket.on('draw', (data) => {
+      const { x, y } = data
+      context.lineWidth = data.lineWidth
+      context.lineCap = 'round'
+      context.strokeStyle = data.color
+      
+      context.lineTo(x, y)
+      context.stroke()
+      context.beginPath()
+      context.moveTo(x, y)
+    })
+
     return () => {
       canvas.removeEventListener('mousedown', startDrawing as unknown as EventListener)
       canvas.removeEventListener('mousemove', draw as unknown as EventListener)
       canvas.removeEventListener('mouseup', stopDrawing as unknown as EventListener)
       canvas.removeEventListener('mouseout', stopDrawing as unknown as EventListener)
+      socket.off('draw')
     }
   }, [isDrawing, lastPos, drawingColor, lineWidth])
-
-  // const clearCanvas = () => {
-  //   const canvas = canvasRef.current
-  //   if (!canvas) return
-
-  //   const context = canvas.getContext('2d')
-  //   if (!context) return
-
-  //   context.clearRect(0, 0, canvas.width, canvas.height)
-  // }
-
-  // const handleColorChange = (e) => {
-  //   setDrawingColor(e.target.classList[1])
-  // }
-
-  // const colorBox = (color: Colors, isClickable: boolean=true) => {
-  //   if (!isClickable) return <div className={`color-box ${color}`}></div>
-    
-  //   return <div className={`color-box ${color}`} key={color} onClick={(e) => handleColorChange(e)}></div>
-  // }
-
-  // const toolBox = (tool: Tools) => {
-  //   return <span className="material-symbols-outlined tool-box" key={tool}>{tool}</span>
-  // }
-
-  // pulls colors from enum list and returns a colorbox jsx element for the color selector
-  // const getColors = () => Object.values(Colors).map((color) => colorBox(color))
-
-  // const getTools = () => Object.values(Tools).map((tool) => toolBox(tool))
-
-  // const changeLineWidth = (direction: string) => {
-  //   if (direction === 'increase') return setLineWidth((prev) => prev += 1)
-    
-  //   if (lineWidth === 1) return
-  //   return setLineWidth((prev) => prev -= 1)
-  // }
 
   return (
     <div className="canvas-container">

@@ -11,7 +11,7 @@ export const PlayerList = ({ playerList }: PlayerListProps) => {
     <div className="player-count">Users ({playerList.length})</div>
     <ul>
       {playerList.map((player) => (
-        <li className="player-item">{player.userName}<span className="player-score">{player.score}</span></li>
+        <li className="player-item" key={player.userName}>{player.userName}<span className="player-score" key={player.userName}>{player.score}</span></li>
       ))}
     </ul>
   </div>

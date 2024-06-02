@@ -153,8 +153,13 @@ $box-size: 40px;
       padding: 0 30px 0 20px;
       text-align: left;
       .chat {
-        border-radius: 5px;
         margin: 4px 0;
+        &.admin {
+          .message {
+            color: gray;
+            font-style: italic;
+          }
+        }
       }
     }
     &.focused {
