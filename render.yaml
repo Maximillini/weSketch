@@ -16,4 +16,7 @@ services:
     start_command: |
       cd server
       npm start
+    envVars:
+      - key: PORT
+      value: 4000
     plan: starter
