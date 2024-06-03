@@ -1,5 +1,5 @@
 // TODO - Split styling into individual files
-$box-size: 40px;
+$box-size: 20px;
 
 @mixin random-font-color(){
   color: rgb(random(255), random(255), random(255));
@@ -16,6 +16,7 @@ $box-size: 40px;
 .game-page {
   display: flex;
   flex-wrap: wrap;
+  font-family: 'Roboto Condensed', sans-serif;
   .header {
     flex: 0 0 100%;
   }
@@ -47,9 +48,12 @@ $box-size: 40px;
     }
     .color-selector {
       display: flex;
+      flex-flow: row wrap;
+      margin: 6px 2px 0;
       .color-box {
-        flex: 0 0 $box-size;
         cursor: crosshair;
+        flex: 0 1 $box-size;
+        margin: 2px;
         &:hover {
           box-shadow: inset 0 0 10px 6px yellow;
         }
@@ -170,7 +174,6 @@ $box-size: 40px;
 
 .color-box {
   height: $box-size;
-  width: $box-size;
   &.black { background-color: black;}
   &.blue { background-color: blue;}
   &.green { background-color: green;}
@@ -178,7 +181,9 @@ $box-size: 40px;
   &.purple { background-color: purple;}
   &.pink { background-color: pink;}
   &.red { background-color: red;}
+  &.turquoise { background-color: turquoise;}
   &.white { background-color: white;}
+  &.yellow { background-color: yellow ;}
 }
 
 .canvas-container {
@@ -232,5 +237,8 @@ $box-size: 40px;
   justify-content: center;
   .line-width-button {
     padding: 4px;
+  }
+  .color-box {
+    width: $box-size;
   }
 }
