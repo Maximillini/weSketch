@@ -1,16 +1,5 @@
-import { create } from 'zustand';
-
-type Player = {
-  userName: string,
-  score: number
-}
-
-type Chat = {
-  userName: string,
-  message: string
-}
-
-type ChatType = 'gameChatLog' | 'generalChatLog'
+import { create } from 'zustand'
+import { Player, Chat, ChatType } from '../types/gameTypes'
 
 type GameStoreState = {
   playerList: Player[],
