@@ -19,6 +19,8 @@ const io = new Server(server, {
 // Serve static files from the "dist" directory
 app.use(express.static(path.join(__dirname, '../../client/dist')));
 
+console.log(express.static(path.join(__dirname, '../../client/dist')))
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../../client/dist', 'index.html'));
 });
