@@ -7,6 +7,8 @@ import { Server } from 'socket.io'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const PORT = process.env.PORT || 4000;
+
 const app = express()
 const server = http.createServer(app)
 const io = new Server(server, {
@@ -15,6 +17,8 @@ const io = new Server(server, {
     methods: ["GET", "POST"]
   }
 })
+
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 // Serve static files from the "dist" directory
 app.use(express.static(path.join(__dirname, '../../client/dist')));
@@ -72,9 +76,6 @@ io.on('connection', (socket) => {
     io.emit('game message', { userName: chatData.userName, message: chatData.message })
   });
 });
-
-const PORT = process.env.PORT || 4000;
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 const normalizedUsersList = () => Object.values(activeUsers).map((user) => user.toLowerCase()) ?? [];
 
