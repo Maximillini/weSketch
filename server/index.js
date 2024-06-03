@@ -21,12 +21,14 @@ const io = new Server(server, {
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 // Serve static files from the "dist" directory
-app.use(express.static(path.join(__dirname, '../../client/dist')));
+server.use(express.static(path.join(__dirname, '../../client/dist')));
 
-console.log(path.join(__dirname, '../../client/dist'))
+console.log({path: path.join(__dirname, '../../client/dist')})
+console.log({ filename: __filename })
+console.log()
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/client/dist', 'index.html'));
+server.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../client/dist', 'index.html'));
 });
 
 const activeUsers = {}
