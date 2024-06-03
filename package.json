@@ -11,9 +11,8 @@
     "devServer": "cd server && nodemon index.js",
     "dev": "concurrently \"npm run devClient\" \"npm run devServer\"",
     "build": "cd client && npm run build",
-    "start": "npm run build && npm run production",
-    "setup": "npm install && cd client && npm install && cd ../server && npm install",
-    "production": "npm run build"
+    "start": "concurrently \"npm run client\" \"npm run server\"",
+    "setup": "npm install && cd client && npm install && cd ../server && npm install"
   },
   "author": "",
   "license": "ISC",
