@@ -5,12 +5,15 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "client": "cd client && npm run dev",
+    "client": "cd client && npm run build",
+    "devClient": "cd client && npm run dev",
     "server": "cd server && node index.js",
-    "dev": "concurrently \"npm run client\" \"npm run server\"",
+    "devServer": "cd server && nodemon index.js",
+    "dev": "concurrently \"npm run devClient\" \"npm run devServer\"",
     "build": "cd client && npm run build",
-    "start": "npm run build && npm run dev",
-    "setup": "npm install && cd client && npm install && cd ../server && npm install"
+    "start": "npm run build && npm run production",
+    "setup": "npm install && cd client && npm install && cd ../server && npm install",
+    "production": "npm run build"
   },
   "author": "",
   "license": "ISC",
