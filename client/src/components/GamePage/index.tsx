@@ -11,6 +11,8 @@ enum Colors {
   Pink = 'pink',
   Purple = 'purple',
   Red = 'red',
+  Yellow = 'yellow',
+  Turquoise = 'turquoise',
   White = 'white'
 }
 
