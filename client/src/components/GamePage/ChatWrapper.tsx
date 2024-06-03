@@ -9,20 +9,17 @@ const socket = io('http://localhost:4000')
 
 export const ChatWrapper = () => {
   const playerHandle = usePlayerStore((state) => state.handle)
-  // const playerList = useGameStore((state) => state.playerList)
-  // const addPlayer = useGameStore((state) => state.addPlayer)
-  const [playerList, setPlayerList] = useState([])
+  const [playerList, setPlayerList] = useState<Player[]>([])
   const [gameChats, setGameChats] = useState<Chat[]>([])
   const [generalChats, setGeneralChats] = useState<Chat[]>([])
   const [chatValue, setChatValue] = useState<string>('')
   const [currentChatFocus, setCurrentChatFocus] = useState<'game' | 'general'>('game')
   const gameChatRef = useRef<HTMLDivElement>(null)
   const generalChatRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     socket.on('game message', (chat) => {
-      console.log({ chat })
       setGameChats((prev) => [...prev, chat])
     })
 
@@ -35,13 +32,11 @@ export const ChatWrapper = () => {
       const formattedPlayers = players.map((player: Player) => { return { userName: player, score: 0 }})
       setGameChats((prev) => [...prev, { userName: 'admin', message: `${players[players.length - 1]} has joined the game`}])
       setPlayerList(formattedPlayers)
-      // addPlayer({ userName: players[players.length - 1], score: 0 })
     })
 
     socket.on('leave chat', (updatedPlayers, leavingPlayer) => {
       const formattedPlayers = updatedPlayers.map((player: Player) => { return { userName: player, score: 0 }})
       setGameChats((prev) => [...prev, { userName: 'admin', message: `${leavingPlayer} has left the game`}])
-
       setPlayerList(formattedPlayers)
     })
   }, [])
