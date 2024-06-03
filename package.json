@@ -9,7 +9,8 @@
     "server": "cd server && nodemon index.js",
     "dev": "concurrently \"npm run client\" \"npm run server\"",
     "build": "cd client && npm run build",
-    "start": "npm run build && npm run dev"
+    "start": "npm run build && npm run dev",
+    "setup": "npm install && cd client && npm install && cd ../server && npm install"
   },
   "author": "",
   "license": "ISC",
