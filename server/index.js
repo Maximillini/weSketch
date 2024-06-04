@@ -26,7 +26,7 @@ server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 console.log({ filename: __filename })
 
-console.log(fs.readdir(path.join(__dirname, '../../src/client/dist'), (err, files) => {
+console.log(fs.readdir(path.join(__dirname, '../../src/client/dist/assets'), (err, files) => {
   if (err) {
     return console.error('Error reading directory:', err)
   }
@@ -35,8 +35,8 @@ console.log(fs.readdir(path.join(__dirname, '../../src/client/dist'), (err, file
   files.forEach(file => console.log(file))
 }))
 
-app.get('*', (req, res) => {
-  console.log({ req, res })
+app.get('/', (req, res) => {
+  // console.log({ req, res })
   res.sendFile(path.join(__dirname, '../../src/client/dist', 'index.html'));
 });
 
