@@ -19,22 +19,24 @@ const io = new Server(server, {
   }
 })
 
+const clientDistPath = path.join(__dirname, '../../src/client/dist')
+
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 // Serve static files from the "dist" directory
-app.use(express.static(path.join(__dirname, '../../client/dist')));
-
 app.use(express.static(clientDistPath, {
   setHeaders: (res, path) => {
     if (path.endsWith('.js')) {
       res.setHeader('Content-Type', 'application/javascript');
+    } else if (path.endsWith('.css')) {
+      res.setHeader('Content-Type', 'text/css')
     }
   }
 }));
 
 console.log({ filename: __filename })
 
-console.log(fs.readdir(path.join(__dirname, '../../src/client/dist/assets'), (err, files) => {
+console.log(fs.readdir(path.join(clientDistPath, 'assets'), (err, files) => {
   if (err) {
     return console.error('Error reading directory:', err)
   }
@@ -43,9 +45,9 @@ console.log(fs.readdir(path.join(__dirname, '../../src/client/dist/assets'), (er
   files.forEach(file => console.log(file))
 }))
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
   // console.log({ req, res })
-  res.sendFile(path.join(__dirname, '../../src/client/dist', 'index.html'));
+  res.sendFile(clientDistPath, 'index.html');
 });
 
 const activeUsers = {}
