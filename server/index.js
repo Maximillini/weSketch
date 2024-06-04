@@ -22,7 +22,7 @@ const io = new Server(server, {
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 // Serve static files from the "dist" directory
-app.use(express.static(path.join(__dirname, '../../client/dist')));
+// app.use(express.static(path.join(__dirname, '../../client/dist')));
 
 console.log({ filename: __filename })
 
@@ -36,6 +36,7 @@ console.log(fs.readdir(path.join(__dirname, '../../src/client/dist'), (err, file
 }))
 
 app.get('*', (req, res) => {
+  console.log({ req, res })
   res.sendFile(path.join(__dirname, '../../src/client/dist', 'index.html'));
 });
 
