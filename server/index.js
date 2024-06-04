@@ -24,8 +24,8 @@ server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 // Serve static files from the "dist" directory
 app.use(express.static(path.join(__dirname, '../../client/dist')));
 
-console.log({path: path.join(__dirname, '../../client/dist')})
 console.log({ filename: __filename })
+
 console.log(fs.readdir(path.join(__dirname, '../../src/client/dist'), (err, files) => {
   if (err) {
     return console.error('Error reading directory:', err)
