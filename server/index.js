@@ -22,7 +22,15 @@ const io = new Server(server, {
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 // Serve static files from the "dist" directory
-// app.use(express.static(path.join(__dirname, '../../client/dist')));
+app.use(express.static(path.join(__dirname, '../../client/dist')));
+
+app.use(express.static(clientDistPath, {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.js')) {
+      res.setHeader('Content-Type', 'application/javascript');
+    }
+  }
+}));
 
 console.log({ filename: __filename })
 
