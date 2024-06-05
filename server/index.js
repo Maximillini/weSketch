@@ -8,8 +8,6 @@ import cors from 'cors'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-console.log({ initialEnv: process.env.NODE_ENV })
-
 const NODE_ENV = process.env.NODE_ENV || 'development'
 const PORT = process.env.PORT || 4000
 
@@ -19,7 +17,7 @@ if (NODE_ENV === 'production') {
   allowedOrigins = ['https://myapp.com', 'https://api.myapp.com']
 }
 
-console.log({ env: NODE_ENV })
+console.log({ env: NODE_ENV, initialEnv: process.env.NODE_ENV })
 console.log({ allowedOrigins })
 
 const app = express()
