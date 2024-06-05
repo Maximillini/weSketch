@@ -6,13 +6,12 @@ import { Server } from 'socket.io'
 import cors from 'cors'
 import dotenv from 'dotenv'
 
-dotenv.config()
-
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const NODE_ENV = process.env.NODE_ENV || 'development'
 const PORT = process.env.PORT || 4000
+dotenv.config({ path: `.env.${NODE_ENV}` })
 
 let allowedOrigins = ['http://localhost:5173', 'http://localhost:4000']
 
