@@ -10,7 +10,9 @@ export const useSocketStore = create<SocketState>((set) => {
   let socket: Socket
 
   const initializeSocket = () => {
-    socket = io('http://localhost:4000') // Adjust to your server URL
+    const socketServerUrl = import.meta.env.VITE_SOCKET_SERVER_URL
+
+    socket = io(socketServerUrl)
     socket.on('connect', () => {
       console.log('Socket connected:', socket.id)
     })
