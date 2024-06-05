@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 4000
 let allowedOrigins = ['http://localhost:5173', 'http://localhost:4000']
 
 if (NODE_ENV === 'production') {
-  allowedOrigins = ['https://myapp.com', 'https://api.myapp.com']
+  allowedOrigins = ['https://wesketch.onrender.com', 'http://localhost:4000']
 }
 
 console.log({ env: NODE_ENV, initialEnv: process.env.NODE_ENV })
