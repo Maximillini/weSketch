@@ -8,13 +8,19 @@ import cors from 'cors'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+console.log({ initialEnv: process.env.NODE_ENV })
+
+const NODE_ENV = process.env.NODE_ENV || 'development'
 const PORT = process.env.PORT || 4000
 
 let allowedOrigins = ['http://localhost:5173', 'http://localhost:4000']
 
-if (process.env.NODE_ENV === 'production') {
+if (NODE_ENV === 'production') {
   allowedOrigins = ['https://myapp.com', 'https://api.myapp.com']
 }
+
+console.log({ env: NODE_ENV })
+console.log({ allowedOrigins })
 
 const app = express()
 const server = http.createServer(app)
