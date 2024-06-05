@@ -3,25 +3,40 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import http from 'http'
 import { Server } from 'socket.io'
-import fs from 'fs'
+import cors from 'cors'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const PORT = process.env.PORT || 4000
 
+let allowedOrigins = ['http://localhost:5173', 'http://localhost:4000']
+
+if (process.env.NODE_ENV === 'production') {
+  allowedOrigins = ['https://myapp.com', 'https://api.myapp.com']
+}
+
 const app = express()
 const server = http.createServer(app)
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:5173',
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
+    credentials: true,
   },
 })
 
 const clientDistPath = path.join(__dirname, '../../src/client/dist')
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ['GET', 'POST'],
+    credentials: true,
+  })
+)
 
 // Serve static files from the "dist" directory
 app.use(
