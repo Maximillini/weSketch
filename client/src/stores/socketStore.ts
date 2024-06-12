@@ -10,7 +10,8 @@ export const useSocketStore = create<SocketState>((set) => {
   let socket: Socket
 
   const initializeSocket = () => {
-    const socketServerUrl = import.meta.env.VITE_SOCKET_SERVER_URL
+    const socketServerUrl =
+      import.meta.env.VITE_SOCKET_SERVER_URL ?? 'http://localhost:4000'
 
     socket = io(socketServerUrl)
     socket.on('connect', () => {
