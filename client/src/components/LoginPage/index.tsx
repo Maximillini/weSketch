@@ -1,7 +1,15 @@
 import React, { ChangeEvent, useState } from 'react'
+import { faker } from '@faker-js/faker'
 import { usePlayerStore } from '../../stores/playerStore'
 import { useGameStore } from '../../stores/gameStore'
 import { useSocketStore } from '../../stores/socketStore'
+
+const randomName =
+  faker.science.chemicalElement().name +
+  '_' +
+  faker.animal.type() +
+  '_' +
+  faker.number.int(400)
 
 export const LoginPage = () => {
   const socket = useSocketStore((state) => state.socket)
@@ -16,9 +24,12 @@ export const LoginPage = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    setHandle(handleValue)
-    addPlayer({ userName: handleValue, score: 0 })
-    socket?.emit('register-user', handleValue)
+    const submittedName = handleValue || randomName
+
+    setHandle(submittedName)
+    addPlayer({ userName: submittedName, score: 0 })
+
+    socket?.emit('register-user', submittedName)
   }
 
   return (
@@ -27,11 +38,11 @@ export const LoginPage = () => {
       <form className="login-box" onSubmit={(e) => handleSubmit(e)}>
         <input
           type="text"
-          placeholder="Handle"
+          placeholder={`${randomName}`}
           value={handleValue}
           onChange={(e) => handleChange(e)}
         />
-        <input type="button" value="Submit" />
+        <input type="submit" value="Submit" />
       </form>
     </div>
   )
