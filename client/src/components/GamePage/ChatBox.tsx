@@ -13,8 +13,8 @@ export const ChatBox = forwardRef(({ chatType, chats=[], onClick, focused }: Cha
     <div className={`${chatType}-chat ${focused ? 'focused' : ''} ${chatType}`} onClick={(e) => onClick(e)} ref={ref}>
       <div className="chat-title">{chatType} Chat</div>
       <ul className="chat-log">
-        {chats.map((chat) => (
-          <li className={`chat ${chat.userName === 'admin' ? 'admin' : ''}`}>
+        {chats.map((chat, idx) => (
+          <li className={`chat ${chat.userName === 'admin' ? 'admin' : ''}`} key={chat.userName+idx} >
             {chat.userName !== 'admin' && <span className="user">{chat.userName}: </span>}
             <span className="message">{chat.message}</span>
           </li>
