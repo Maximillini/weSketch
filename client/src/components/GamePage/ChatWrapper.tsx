@@ -40,6 +40,7 @@ export const ChatWrapper = () => {
         {
           userName: 'admin',
           message: `${players[players.length - 1]} has joined the game`,
+          timeStamp: new Date(Date.now()).toLocaleTimeString()
         },
       ])
       setPlayerList(formattedPlayers)

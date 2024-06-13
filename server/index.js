@@ -109,13 +109,13 @@ io.on('connection', (socket) => {
       return io.emit('general message', {
         userName: chatData.userName,
         message: chatData.message,
+        timeStamp: new Date(Date.now()).toLocaleTimeString()
       })
-
-    console.log('this should be showing for game messages only')
 
     io.emit('game message', {
       userName: chatData.userName,
       message: chatData.message,
+      timeStamp: new Date(Date.now()).toLocaleTimeString()
     })
   })
 })
