@@ -122,6 +122,8 @@ $box-size: 20px;
   .game-chat {
     flex: 0 0 62%;
     height: 322px;
+    max-width: 400px;
+    min-width: 400px;
     .chat {
       border-radius: 10px;
       margin: 2px 0;
@@ -132,14 +134,15 @@ $box-size: 20px;
   }
 
   .chat-input {
-    width: 100%;
+    width: 99%;
   }
   
   .general-chat {
     border: 1px solid white;
     flex: 1 1 100%;
-    margin-top: 20px;
     height: 212px;
+    margin-top: 20px;
+    max-width: 640px;
     .chat {
       .user {
         color: pink;
@@ -163,6 +166,9 @@ $box-size: 20px;
             color: gray;
             font-style: italic;
           }
+        }
+        .message {
+          word-wrap: break-word;
         }
       }
     }
