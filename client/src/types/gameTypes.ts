@@ -3,8 +3,13 @@ export type Player = {
   score: number
 }
 
+export type ServerPlayer = {
+  id: string,
+  name: string
+}
+
 export type Chat = {
-  userName: string,
+  userName: string
   message: string
 }
 
