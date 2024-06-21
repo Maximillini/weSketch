@@ -29,7 +29,7 @@ export const LoginPage = () => {
     setHandle(submittedName)
     addPlayer({ userName: submittedName, score: 0 })
 
-    socket?.emit('register-user', submittedName)
+    socket?.emit('createOrJoinGame', submittedName)
   }
 
   return (

@@ -8,7 +8,6 @@ type ChatBoxProps = {
 }
 
 export const ChatBox = forwardRef(({ chatType, chats=[], onClick, focused }: ChatBoxProps, ref: React.ForwardedRef<HTMLDivElement>) => {
-  console.log({ chats })
   return (
     <div className={`${chatType}-chat ${focused ? 'focused' : ''} ${chatType}`} onClick={(e) => onClick(e)} ref={ref}>
       <div className="chat-title">{chatType} Chat</div>

@@ -1,27 +1,8 @@
 import { useState } from 'react'
 import { Canvas } from './Canvas'
 import { ChatWrapper } from './ChatWrapper'
+import { Colors, Tools } from 'types/canvasTypes'
 import './styles.scss'
-
-enum Colors {
-  Black = 'black',
-  Blue = 'blue',
-  Green = 'green',
-  Orange = 'orange',
-  Pink = 'pink',
-  Purple = 'purple',
-  Red = 'red',
-  Yellow = 'yellow',
-  Turquoise = 'turquoise',
-  White = 'white'
-}
-
-enum Tools {
-  Pencil = 'edit',
-  Line = 'pen_size_1',
-  Bucket = 'colors',
-  Eraser = 'ink_eraser'
-}
 
 export const GamePage = () => {
   const [drawingColor, setDrawingColor] = useState<Colors>(Colors.Black)

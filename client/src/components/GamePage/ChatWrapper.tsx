@@ -1,20 +1,21 @@
 import { useState, useRef, useEffect } from 'react'
 import { PlayerList } from './PlayerList'
 import { ChatBox } from './ChatBox'
-import { usePlayerStore } from '../../stores/playerStore'
-import { useSocketStore } from '../../stores/socketStore'
-import { Chat, Player } from '../../types/gameTypes'
+import { useSocketStore } from 'stores/socketStore'
+import { Chat, Player, ServerPlayer } from 'types/gameTypes'
+
+type ChatType = 'game' | 'general'
 
 export const ChatWrapper = () => {
+  // Zustand State
   const socket = useSocketStore((state) => state.socket)
-  const playerHandle = usePlayerStore((state) => state.handle)
+  // Local State
   const [playerList, setPlayerList] = useState<Player[]>([])
   const [gameChats, setGameChats] = useState<Chat[]>([])
   const [generalChats, setGeneralChats] = useState<Chat[]>([])
   const [chatValue, setChatValue] = useState<string>('')
-  const [currentChatFocus, setCurrentChatFocus] = useState<'game' | 'general'>(
-    'game'
-  )
+  const [currentChatFocus, setCurrentChatFocus] = useState<ChatType>('game')
+  // Refs
   const gameChatRef = useRef<HTMLDivElement>(null)
   const generalChatRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -22,38 +23,39 @@ export const ChatWrapper = () => {
   useEffect(() => {
     if (!socket) return
 
-    socket.on('game message', (chat) => {
+    socket.on('gameChatLogUpdate', (chat) => {
       setGameChats((prev) => [...prev, chat])
     })
 
-    socket.on('general message', (chat) => {
+    socket.on('generalChatLogUpdate', (chat) => {
       setGeneralChats((prev) => [...prev, chat])
     })
 
-    socket.on('user-added', (players) => {
-      console.log({ players })
-      const formattedPlayers = players.map((player: Player) => {
-        return { userName: player, score: 0 }
+    socket.on('joinGame', (players) => {
+      const formattedPlayers = players.map((player: ServerPlayer) => {
+        return { userName: player.name, score: 0 }
       })
-      setGameChats((prev) => [
-        ...prev,
-        {
-          userName: 'admin',
-          message: `${players[players.length - 1]} has joined the game`,
-          timeStamp: new Date(Date.now()).toLocaleTimeString()
-        },
-      ])
+
+      socket.emit('globalMessage', `${players[players.length - 1].name} has joined the game`)
+
+      if (players.length < 2) {
+        socket.emit('globalMessage', 'Game will begin when another player joins')
+      }
+
+      if (players.length >= 2) {
+        socket.emit('globalMessage', 'Game will begin in 10 seconds')
+      }
+
       setPlayerList(formattedPlayers)
     })
 
-    socket.on('leave chat', (updatedPlayers, leavingPlayer) => {
+    socket.on('leave game', (updatedPlayers, leavingPlayer) => {
       const formattedPlayers = updatedPlayers.map((player: Player) => {
         return { userName: player, score: 0 }
       })
-      setGameChats((prev) => [
-        ...prev,
-        { userName: 'admin', message: `${leavingPlayer} has left the game` },
-      ])
+
+      // setGameChats((prev) => [...prev, adminMessage(`${leavingPlayer} has left the game`)])
+      socket.emit('globalMessage', `${leavingPlayer} has left the game`)
       setPlayerList(formattedPlayers)
     })
   }, [socket])
@@ -86,17 +88,15 @@ export const ChatWrapper = () => {
   const handleChatSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter') return
 
-    const chat = {
-      userName: playerHandle,
-      message: (e.target as HTMLInputElement).value,
-    }
+    const chat = (e.target as HTMLInputElement).value
 
     setChatValue('')
 
-    return socket?.emit('chat message', {
-      ...chat,
-      ...{ chatType: currentChatFocus },
-    })
+    if (currentChatFocus === 'game') {
+      return socket?.emit('gameChatMessage', chat)
+    }
+
+    return socket?.emit('generalChatMessage', chat)
   }
 
   const handleChatInputChange = (e: React.SyntheticEvent) => {
