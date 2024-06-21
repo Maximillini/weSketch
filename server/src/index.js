@@ -35,7 +35,7 @@ const io = new Server(server, {
 
 const clientDistPath =
   NODE_ENV === 'production'
-    ? path.join(__dirname, '../../src/client/dist')
+    ? path.join(__dirname, '../../client/dist')
     : path.join(__dirname, '../client')
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
