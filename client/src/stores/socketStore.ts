@@ -9,9 +9,14 @@ type SocketState = {
 export const useSocketStore = create<SocketState>((set) => {
   let socket: Socket
 
+  console.log(import.meta.env)
+
   const initializeSocket = () => {
+    console.log('viteSocketServerUrl:', import.meta.env.VITE_SOCKET_SERVER_URL)
     const socketServerUrl =
-      import.meta.env.VITE_SOCKET_SERVER_URL ?? 'http://localhost:4000'
+      import.meta.env.MODE === 'production' ? 'https://wesketch.onrender.com' : 'http://localhost:4000'
+
+    console.log({ socketServerUrl })
 
     socket = io(socketServerUrl)
     socket.on('connect', () => {

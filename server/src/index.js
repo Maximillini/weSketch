@@ -17,14 +17,12 @@ dotenv.config({ path: `.env.${NODE_ENV}` })
 let allowedOrigins = ['http://localhost:5173', 'http://localhost:4000']
 
 if (NODE_ENV === 'production') {
-  allowedOrigins = ['https://wesketch.onrender.com', 'http://localhost:4000']
+  allowedOrigins = ['https://wesketch.onrender.com']
 }
-
-// console.log({ env: NODE_ENV, initialEnv: process.env.NODE_ENV })
-// console.log({ allowedOrigins })
 
 const app = express()
 const server = http.createServer(app)
+
 const io = new Server(server, {
   cors: {
     origin: allowedOrigins,
@@ -38,7 +36,13 @@ const clientDistPath =
     ? path.join(__dirname, '../../client/dist')
     : path.join(__dirname, '../client')
 
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+  console.log({ env: NODE_ENV, initialEnv: process.env.NODE_ENV })
+  console.log({ allowedOrigins })
+  console.log('VITE_SOCKET_SERVER_URL', process.env.VITE_SOCKET_SERVER_URL)
+  console.log(process.env)
+})
 
 app.use(
   cors({
@@ -62,7 +66,7 @@ app.use(
 )
 
 app.get('*', (req, res) => {
-  res.sendFile(clientDistPath, 'index.html')
+  res.sendFile(path.join(clientDistPath, 'index.html'))
 })
 
 io.on('connection', (socket) => {
