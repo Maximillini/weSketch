@@ -1,20 +1,21 @@
 import { useState, useRef, useEffect } from 'react'
 import { PlayerList } from './PlayerList'
 import { ChatBox } from './ChatBox'
-import { usePlayerStore } from '../../stores/playerStore'
-import { useSocketStore } from '../../stores/socketStore'
-import { Chat, Player } from '../../types/gameTypes'
+import { useSocketStore } from 'stores/socketStore'
+import { Chat, Player, ServerPlayer } from 'types/gameTypes'
+
+type ChatType = 'game' | 'general'
 
 export const ChatWrapper = () => {
+  // Zustand State
   const socket = useSocketStore((state) => state.socket)
-  const playerHandle = usePlayerStore((state) => state.handle)
+  // Local State
   const [playerList, setPlayerList] = useState<Player[]>([])
   const [gameChats, setGameChats] = useState<Chat[]>([])
   const [generalChats, setGeneralChats] = useState<Chat[]>([])
   const [chatValue, setChatValue] = useState<string>('')
-  const [currentChatFocus, setCurrentChatFocus] = useState<'game' | 'general'>(
-    'game'
-  )
+  const [currentChatFocus, setCurrentChatFocus] = useState<ChatType>('game')
+  // Refs
   const gameChatRef = useRef<HTMLDivElement>(null)
   const generalChatRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
