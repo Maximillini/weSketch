@@ -1,4 +1,4 @@
-import { createPlayer } from '../models/player.js';
+import { createPlayer, updatePlayerScore } from '../models/player.js';
 
 const players = {}
 
@@ -14,6 +14,12 @@ const getPlayers = () => players
 
 const removePlayerById = (id) => {
   delete players[id]
+}
+
+const updateScore = (playerId, newScore) => {
+  if (players[playerId]) {
+    updatePlayerScore(players[playerId], newScore)
+  }
 }
 
 export { createNewPlayer, getPlayerById, getPlayers, removePlayerById }

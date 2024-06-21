@@ -3,3 +3,8 @@ export const createPlayer = (id, name, score=0) => ({
   name,
   score
 })
+
+export const updatePlayerScore = (player, newScore) => ({
+  ...player,
+  score: newScore
+})
