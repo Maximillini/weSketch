@@ -1,19 +1,11 @@
 import React, { ChangeEvent, useState } from 'react'
-import { faker } from '@faker-js/faker'
 import { usePlayerStore } from '../../stores/playerStore'
-import { useGameStore } from '../../stores/gameStore'
 import { useSocketStore } from '../../stores/socketStore'
-
-const randomName =
-  faker.science.chemicalElement().name +
-  '_' +
-  faker.animal.type() +
-  '_' +
-  faker.number.int(400)
+import { getRandomName } from '@/helpers/playerHelpers'
 
 export const LoginPage = () => {
+  const randomName = getRandomName()
   const socket = useSocketStore((state) => state.socket)
-  const addPlayer = useGameStore((state) => state.addPlayer)
   const setHandle = usePlayerStore((state) => state.setHandle)
   const [handleValue, setHandleValue] = useState<string>('')
 
@@ -27,7 +19,6 @@ export const LoginPage = () => {
     const submittedName = handleValue || randomName
 
     setHandle(submittedName)
-    addPlayer({ userName: submittedName, score: 0 })
 
     socket?.emit('createOrJoinGame', submittedName)
   }

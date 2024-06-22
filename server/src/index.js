@@ -40,8 +40,6 @@ server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
   console.log({ env: NODE_ENV, initialEnv: process.env.NODE_ENV })
   console.log({ allowedOrigins })
-  console.log('VITE_SOCKET_SERVER_URL', process.env.VITE_SOCKET_SERVER_URL)
-  console.log(process.env)
 })
 
 app.use(

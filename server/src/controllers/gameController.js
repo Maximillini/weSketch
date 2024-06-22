@@ -1,24 +1,33 @@
-import { 
-  createNewGame, 
-  addGeneralChat, 
-  addGameChat, 
-  getCurrentGame, 
-  leaveGame, 
-  updateGame, 
-  getGameChatLog, 
-  getGeneralChatLog, 
-  resetGame, 
-  currentPlayersToArray, 
-  startGame
+import {
+  createNewGame,
+  addGeneralChat,
+  addGameChat,
+  getCurrentGame,
+  leaveGame,
+  updateGame,
+  getGameChatLog,
+  getGeneralChatLog,
+  resetGame,
+  currentPlayersToArray,
+  startGame,
 } from '../services/gameService.js'
-import { createNewPlayer, getPlayerById, getPlayers, removePlayerById } from '../services/playerService.js'
+import {
+  createNewPlayer,
+  getPlayerById,
+  getPlayers,
+  getRandomPlayer,
+  removePlayerById,
+} from '../services/playerService.js'
 
 export const gameController = (io, socket) => {
   const handleChatMessage = (message, eventName, callbackFn) => {
     const player = getPlayerById(socket.id)
 
     if (player) {
-      io.to(getCurrentGame().id).emit(eventName, { userName: player.name, message })
+      io.to(getCurrentGame().id).emit(eventName, {
+        userName: player.name,
+        message,
+      })
       callbackFn(player, message)
     } else {
       console.error('Player does not exist! How did you get here??')
@@ -34,7 +43,7 @@ export const gameController = (io, socket) => {
       const player = createNewPlayer(playerId, name)
       gameId = createNewGame(player)
       socket.emit('gameCreated', gameId, playerId)
-      }
+    }
 
     if (!getPlayerById(playerId)) createNewPlayer(playerId, name)
 
@@ -43,10 +52,32 @@ export const gameController = (io, socket) => {
     // callbackFn(gameId, playerId)
   })
 
-  socket.on('startGame', () => {
-    startGame()
+  socket.on('startRound', () => {
+    if (!getCurrentGame().gameState.gameStarted) {
+      startGame()
+    }
+
+    const nextArtist = getRandomPlayer()
+    const message = `Next artist: ${nextArtist.name}`
+
+    updateGame({
+      currentArtist: nextArtist,
+      round: getCurrentGame().gameState.round + 1,
+    })
+
+    socket.emit('gameChatLogUpdate', {
+      userName: 'admin',
+      message,
+    })
+
+    addGameChat({ message })
+    io.emit('updateGame', getCurrentGame())
   })
-  
+
+  socket.on('startTimer', (seconds) => {
+    updateGame({ countdownTimer: seconds })
+  })
+
   socket.on('wordSelected', (word) => {
     updateGame({ selectedWord: word })
     io.to(socket.id).emit('selectedWordUpdate', word)
@@ -55,7 +86,7 @@ export const gameController = (io, socket) => {
   socket.on('gameChatMessage', (message) => {
     handleChatMessage(message, 'gameChatLogUpdate', addGameChat)
   })
-    
+
   socket.on('generalChatMessage', (message) => {
     handleChatMessage(message, 'generalChatLogUpdate', addGeneralChat)
   })
@@ -64,11 +95,11 @@ export const gameController = (io, socket) => {
     socket.emit('gameChatLogUpdate', { userName: 'admin', message })
     addGameChat({ message })
   })
-    
+
   socket.on('draw', (data) => {
     socket.broadcast.emit('draw', data)
   })
-    
+
   socket.on('clearCanvas', () => {
     socket.broadcast.emit('clear')
   })
@@ -76,8 +107,11 @@ export const gameController = (io, socket) => {
   socket.on('debug', () => {
     const game = getCurrentGame()
     console.log({ game })
-    console.log({players: getCurrentPlayers()})
-    console.log({ gameChats: getGameChatLog(), generalChats: getGeneralChatLog() })
+    console.log({ players: getCurrentPlayers() })
+    console.log({
+      gameChats: getGameChatLog(),
+      generalChats: getGeneralChatLog(),
+    })
   })
 
   socket.on('disconnect', () => {
@@ -90,4 +124,3 @@ export const gameController = (io, socket) => {
     if (players.length === 0) resetGame()
   })
 }
-

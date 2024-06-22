@@ -1,20 +1,19 @@
 import { create } from 'zustand'
-import { Player, Chat, ChatType } from '../types/gameTypes';
+import { Player, Chat, ChatLogType, GameState } from '../types/gameTypes'
+import _ from 'lodash'
 
-type GameStoreState = {
-  playerList: Player[],
-  gameChatLog: { userName: string, message: string }[],
-  generalChatLog: { userName: string, message: string }[],
-  gameState: {
-    hasStarted: boolean,
-    currentRound: number,
-    currentWordList: string[],
-    currentArtist: Player | null
-  },
+export type GameStoreState = {
+  playerList: Player[]
+  gameChatLog: { userName: string; message: string }[]
+  generalChatLog: { userName: string; message: string }[]
+  gameState: GameState
   setPlayers: (playerList: Player[]) => void
   startGame: () => void
-  addPlayer: (newPlayer: Player) => void,
-  addChat: (newChat: Chat, chatType: ChatType) => void,
+  addPlayer: (newPlayer: Player) => void
+  setPlayerList: (updatedPlayers: Player[]) => void
+  addChat: (newChat: Chat, chatType: ChatLogType) => void
+  setGameState: (newState: Partial<GameState>) => void
+  setTimeRemaining: (time: number) => void
 }
 
 export const useGameStore = create<GameStoreState>((set) => ({
@@ -22,13 +21,26 @@ export const useGameStore = create<GameStoreState>((set) => ({
   gameChatLog: [],
   generalChatLog: [],
   gameState: {
-    hasStarted: false,
-    currentRound: 1,
+    gameStarted: false,
+    round: 1,
     currentWordList: ['', '', ''],
     currentArtist: null,
+    countdownTimer: 0,
   },
   setPlayers: (playerList) => set({ playerList }),
-  startGame: () => set(<Partial<GameStoreState>>({ gameState: { hasStarted: true }})),
-  addPlayer: (newPlayer) => set((state) => ({ playerList: [...state.playerList, newPlayer] })),
-  addChat: (newChat, chatType) => set((state) => ({ [chatType]: [...state[chatType], newChat]}))
+  startGame: () =>
+    set(<Partial<GameStoreState>>{ gameState: { gameStarted: true } }),
+  addPlayer: (newPlayer) =>
+    set((state) => ({ playerList: [...state.playerList, newPlayer] })),
+  setPlayerList: (updatedPlayers) =>
+    set((state) => ({
+      playerList: { ...state.playerList, ...updatedPlayers },
+    })),
+  addChat: (newChat, chatType) =>
+    set((state) => ({ [chatType]: [...state[chatType], newChat] })),
+  setGameState: (newState) => set((state) => ({ ...state, ...newState })),
+  setTimeRemaining: (time) =>
+    set((state) => ({
+      gameState: { ...state.gameState, ...{ countdownTimer: time } },
+    })),
 }))

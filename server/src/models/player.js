@@ -1,10 +1,11 @@
-export const createPlayer = (id, name, score=0) => ({
+export const createPlayer = (id, name, score = 0, host = false) => ({
   id,
   name,
-  score
+  score,
+  host,
 })
 
-export const updatePlayerScore = (player, newScore) => ({
+export const updatePlayer = (player, newState) => ({
   ...player,
-  score: newScore
+  ...newState,
 })

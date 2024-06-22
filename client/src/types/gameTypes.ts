@@ -1,11 +1,8 @@
 export type Player = {
-  userName: string,
-  score: number
-}
-
-export type ServerPlayer = {
-  id: string,
+  id: string
   name: string
+  score: number
+  host: boolean
 }
 
 export type Chat = {
@@ -13,4 +10,14 @@ export type Chat = {
   message: string
 }
 
-export type ChatType = 'gameChatLog' | 'generalChatLog'
+export type ChatType = 'game' | 'general'
+
+export type ChatLogType = 'gameChatLog' | 'generalChatLog'
+
+export type GameState = {
+  countdownTimer: number
+  round: number
+  gameStarted: boolean
+  currentWordList: string[]
+  currentArtist: Player | null
+}

@@ -1,7 +1,7 @@
 // TODO - Split styling into individual files
 $box-size: 20px;
 
-@mixin random-font-color(){
+@mixin random-font-color() {
   color: rgb(random(255), random(255), random(255));
 }
 
@@ -106,10 +106,11 @@ $box-size: 20px;
       .player-item {
         display: flex;
         justify-content: space-between;
-        &:first-child {
+        &.artist {
           color: red;
+          font-weight: bold;
         }
-        &:nth-child(2) {
+        &.host {
           color: #20ac3e;
         }
         // @for $i from 0 to 100 {
@@ -139,7 +140,7 @@ $box-size: 20px;
   .chat-input {
     width: 99%;
   }
-  
+
   .general-chat {
     border: 1px solid white;
     flex: 1 1 100%;
@@ -183,16 +184,36 @@ $box-size: 20px;
 
 .color-box {
   height: $box-size;
-  &.black { background-color: black;}
-  &.blue { background-color: blue;}
-  &.green { background-color: green;}
-  &.orange { background-color: orange;}
-  &.purple { background-color: purple;}
-  &.pink { background-color: pink;}
-  &.red { background-color: red;}
-  &.turquoise { background-color: turquoise;}
-  &.white { background-color: white;}
-  &.yellow { background-color: yellow ;}
+  &.black {
+    background-color: black;
+  }
+  &.blue {
+    background-color: blue;
+  }
+  &.green {
+    background-color: green;
+  }
+  &.orange {
+    background-color: orange;
+  }
+  &.purple {
+    background-color: purple;
+  }
+  &.pink {
+    background-color: pink;
+  }
+  &.red {
+    background-color: red;
+  }
+  &.turquoise {
+    background-color: turquoise;
+  }
+  &.white {
+    background-color: white;
+  }
+  &.yellow {
+    background-color: yellow;
+  }
 }
 
 .canvas-container {
@@ -250,4 +271,10 @@ $box-size: 20px;
   .color-box {
     width: $box-size;
   }
+}
+
+.timer-container {
+  background-color: red;
+  border-radius: 50%;
+  font-size: 2rem;
 }

@@ -1,25 +1,50 @@
-import { createPlayer, updatePlayerScore } from '../models/player.js';
+import { createPlayer, updatePlayer } from '../models/player.js'
 
 const players = {}
 
-const createNewPlayer = (id, name, score) => {
-  if (players[id]) return console.log(`Player ${players[id]} already exists, skipping creation`)
+export const createNewPlayer = (id, name, score) => {
+  if (players[id])
+    return console.log(
+      `Player ${players[id]} already exists, skipping creation`
+    )
+  if (serializePlayers().length === 0) {
+    players[id] = createPlayer(id, name, score, true)
+    return players[id]
+  }
+
   players[id] = createPlayer(id, name, score)
   return players[id]
 }
 
-const getPlayerById = (id) => players[id]
+export const getPlayerById = (id) => players[id]
 
-const getPlayers = () => players
+export const getPlayers = () => players
 
-const removePlayerById = (id) => {
+export const serializePlayers = () => Object.values(players)
+
+export const getRandomPlayer = () => {
+  const playersArray = serializePlayers()
+  const randomPlayer =
+    playersArray[Math.floor(Math.random() * playersArray.length)]
+  return randomPlayer
+}
+
+export const getCurrentHost = () => {
+  return serializePlayers().find((player) => player.host)
+}
+
+export const removePlayerById = (id) => {
   delete players[id]
 }
 
-const updateScore = (playerId, newScore) => {
+export const updateScore = (playerId, newScore) => {
   if (players[playerId]) {
-    updatePlayerScore(players[playerId], newScore)
+    updatePlayer(players[playerId], { score: newScore })
   }
 }
 
-export { createNewPlayer, getPlayerById, getPlayers, removePlayerById }
+export const updatePlayerState = (playerId, newState) => {
+  if (players[playerId]) {
+    updatePlayer(players[playerId], newState)
+  }
+}

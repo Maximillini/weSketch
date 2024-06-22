@@ -2,24 +2,26 @@ import { v4 as uuidv4 } from 'uuid'
 
 const createGame = (host) => {
   return {
-  id: uuidv4(),
-  host: host.id,
-  gameState: {
-    currentArtist: null,
-    wordChoices: [],
-    selectedWord: '',
-    gameChatLog: [],
-    generalChatLog: [],
-    gameStarted: false,
+    id: uuidv4(),
+    host: host.id,
+    gameState: {
+      currentArtist: null,
+      wordChoices: [],
+      selectedWord: '',
+      gameChatLog: [],
+      generalChatLog: [],
+      gameStarted: false,
+      round: 0,
+    },
   }
-}}
+}
 
 const updateGameState = (game, newGameState) => ({
   ...game,
   gameState: {
     ...game.gameState,
-    ...newGameState
-  }
+    ...newGameState,
+  },
 })
 
 export { createGame, updateGameState }
